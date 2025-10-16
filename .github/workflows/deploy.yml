@@ -1,0 +1,63 @@
+# .github/workflows/deploy.yml
+
+name: Deploy ao GitHub Pages com Vite
+
+# Define quando este workflow será executado
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Define permissões necessárias para o GitHub Pages
+permissions:
+  contents: read
+  pages: write 
+  id-token: write
+
+# Define o conjunto de jobs (tarefas) a serem executadas
+jobs:
+  # O job de Build e Deploy
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    # Adiciona o ambiente de deploy (CORREÇÃO ESSENCIAL)
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      # 1. Checkout: Baixa o seu código do repositório
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      # 2. Configura Node.js
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Instalar Dependências e Construir (Build)
+      - name: Instalar Dependências e Construir (Build)
+        run: |
+          npm install
+          npm run build # Cria a pasta 'dist'
+        # Passa a chave de API (Secrets) para a variável de ambiente (env)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} 
+
+      # 4. Configura o GitHub Pages
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+        with:
+          static_site_generator: vite
+
+      # 5. Upload do Artefato (pasta 'dist')
+      - name: Fazer Upload do Artefato de Build
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      # 6. Deploy: Publica o site no GitHub Pages
+      - name: Deploy ao GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
