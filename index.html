@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Controle de Entregas</title>
-    
+
+    <!-- Base path obrigatório no GitHub Pages -->
+    <base href="/Jairo-Senna-Controle-de-entregas-Log-Servi-osv2/">
+
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="theme-color" content="#F97316" />
@@ -14,13 +17,17 @@
     <link rel="apple-touch-icon" href="./icon-192.png" />
     <!-- Fim das PWA Meta Tags -->
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Aplica o tema imediatamente para evitar FOUC (Flash of Unstyled Content)
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark')
+      // Aplica o tema imediatamente (evita FOUC)
+      if (
+        localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
       } else {
-        document.documentElement.classList.remove('dark')
+        document.documentElement.classList.remove('dark');
       }
 
       tailwind.config = {
@@ -28,14 +35,14 @@
         theme: {
           extend: {
             colors: {
-              'brand-primary': '#F97316', // Orange 500
-              'brand-secondary': '#FB923C', // Orange 400
-              'accent': '#F97316', // Orange 500
+              'brand-primary': '#F97316',
+              'brand-secondary': '#FB923C',
+              'accent': '#F97316',
             },
             keyframes: {
               'highlight-pulse': {
-                '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(249, 115, 22, 0.0)' },
-                '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(249, 115, 22, 0.4)' },
+                '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(249,115,22,0.0)' },
+                '50%': { transform: 'scale(1.05)', boxShadow: '0 0 0 10px rgba(249,115,22,0.4)' },
               }
             },
             animation: {
@@ -43,37 +50,48 @@
             }
           },
         },
-      }
+      };
     </script>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "recharts": "https://aistudiocdn.com/recharts@^3.2.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.25.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+
+    <!-- Importmap para dependências externas -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "recharts": "https://aistudiocdn.com/recharts@^3.2.1",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.25.0"
+      }
+    }
+    </script>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="./index.css">
+  </head>
+
   <body class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 antialiased transition-colors duration-300">
     <div id="root"></div>
+
+    <!-- JS principal -->
     <script defer src="./main.js"></script>
-    
-    <!-- Registro do PWA Service Worker -->
+
+    <!-- Registro do Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').then(registration => {
-            console.log('ServiceWorker registrado com sucesso com o escopo: ', registration.scope);
-          }).catch(err => {
-            console.log('Falha no registro do ServiceWorker: ', err);
-          });
+          navigator.serviceWorker.register('./sw.js')
+            .then(registration => {
+              console.log('✅ ServiceWorker registrado com sucesso:', registration.scope);
+            })
+            .catch(err => {
+              console.error('❌ Falha no registro do ServiceWorker:', err);
+            });
         });
       }
     </script>
-  <script type="module" src="/index.tsx"></script>
-</body>
+
+    <!-- Arquivo principal da aplicação -->
+    <script type="module" src="./index.tsx"></script>
+  </body>
 </html>
