@@ -6,7 +6,7 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
       // CORREÇÃO: Nova Base Path adaptada para o nome do novo repositório
-      base: '/Jairo-Senna-Controle-de-entregas-Log-Servi-osv2/', 
+      base: './', 
       server: {
         port: 3000,
         host: '0.0.0.0',
